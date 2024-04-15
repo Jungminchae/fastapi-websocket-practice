@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  test_db:
+    image: "mysql:8.0.30"
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: "admin"
+      MYSQL_USER: "admin"
+      MYSQL_PASSWORD: "root"
+      MYSQL_ROOT_PASSWORD: "root"
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    command: "mct run dev --host 0.0.0.0"
+    restart: always
+    volumes:
+      - .:/app
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
